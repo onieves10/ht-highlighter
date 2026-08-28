@@ -1,6 +1,6 @@
 # HT Highlighter
 
-# Loom Walkthrough: https://github.com/onieves10/ht-highlighter
+# [Loom Walkthrough](https://www.loom.com/share/b64cbd0e4fc14cb790b53ec73b12151c)
 
 **Timeline tracked**
 - ~1.5 hrs to lay out thoughts & whiteboard in a Google Doc
