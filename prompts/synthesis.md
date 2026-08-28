@@ -42,7 +42,7 @@ Return a single JSON object matching `schemas/brief.schema.json`:
 - `contact` {mode, name, title}
 - `dnc` {flag, reason}
 - `summary` — 2-4 sentences, narrative only
-- `signals[]` — {claim, category, source, source_url, snippet, confidence}
+- `signals[]` — {claim, category, source, source_url, snippet, confidence} — return the 8–12 most useful, highest-confidence signals; do not pad
 - `gaps[]` — plain statements of what's missing
 - `recommended_angle` — grounded suggestion, or null if grounding is too thin
 

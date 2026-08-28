@@ -98,7 +98,7 @@ def _synthesize(domain, req, material, contact_material):
         site_output=material["site_text"],
         linkedin_output=linkedin,
     )
-    brief = call_json(system, user, schema=load_schema("brief"), max_tokens=2500)
+    brief = call_json(system, user, schema=load_schema("brief"), max_tokens=8000)
 
     # Code owns the checkable facts — don't trust the LLM for these.
     brief["account"]["domain"] = domain
@@ -117,7 +117,13 @@ def _draft_email(brief):
                 "subject": None, "body": None, "cited_facts": []}
     system, user_t = load_prompt("prompts/email.md")
     user = render(user_t, brief_json=json.dumps(brief, indent=2))
-    return call_json(system, user, schema=load_schema("email"), max_tokens=1200)
+    try:
+        return call_json(system, user, schema=load_schema("email"), max_tokens=2000)
+    except Exception as e:
+        # Never 500 the whole call over a draft hiccup — hold for a human.
+        return {"needs_human": True,
+                "reason": f"Draft generation failed validation ({e}); held for a human.",
+                "subject": None, "body": None, "cited_facts": []}
 
 
 @app.post("/research")

@@ -5,7 +5,7 @@ description: Research a B2B account and draft grounded outreach. Use when the us
 
 # HT Highlighter
 
-Thin launcher. All research/orchestration lives in the Railway service — this
+Thin launcher. All research/orchestration lives in the hosted service — this
 skill just collects inputs, calls it, and presents the result. Do NOT try to do
 the research yourself.
 
@@ -13,32 +13,34 @@ the research yourself.
 
 1. **domain** — the account's website domain, e.g. `snowflake.com` (required).
 2. **contact** — a person's name or title (e.g. "Priya Raman" or "VP of
-   Marketing"), OR the word "general" for account-level outreach.
+   Marketing"), OR "general" for account-level outreach.
 
-If the user only gives a company name, ask for the domain. If they don't mention
-a person, ask: "a specific person, or general company outreach?"
+If only a company name is given, ask for the domain. If no person is mentioned,
+ask: "a specific person, or general company outreach?"
 
 ## How to run
 
-Run the bundled script with the collected inputs:
+Make one HTTP POST to the service and read the JSON back. Use the code tool
+(or a terminal) to run:
 
 ```bash
-HT_ENDPOINT="<your Railway URL>" python3 skill/call_ht.py --domain "<domain>" --contact "<contact or empty>" --mode "<person|general>"
+curl -s --max-time 180 \
+  "https://ht-highlighter-production.up.railway.app/research" \
+  -H "content-type: application/json" \
+  -d '{"domain":"<DOMAIN>","contact":"<CONTACT or empty>","mode":"<person|general>"}'
 ```
 
-- Use `--mode person` when a name/title was given, `--mode general` otherwise.
-- `HT_ENDPOINT` is the deployed Railway base URL (no trailing slash). Locally it
-  defaults to `http://localhost:8000`.
-
-The script prints a JSON object: `{ cache, brief, draft }`.
+- `mode` = `person` when a name/title was given, else `general`.
+- The call can take ~90 seconds on a cache miss (full research). That's normal.
+- Response is JSON: `{ cache, brief, draft }`.
 
 ## How to present the result
 
-1. Lead with the account: name, public/private, and 3–5 top signals from
-   `brief.signals` (show the claim + source; these are grounded, cite them).
-2. List `brief.gaps` plainly under "What we don't know" — do not fill them in.
+1. Lead with the account: name, public/private, and 3–5 top items from
+   `brief.signals` — show each claim **with its source** (these are grounded, cite them).
+2. List `brief.gaps` under "What we don't know" — do not fill them in.
 3. Then the email:
-   - If `draft.needs_human` is true, DO NOT show a drafted email. Say it's held
+   - If `draft.needs_human` is true, do NOT show a drafted email. Say it's held
      for a human and give `draft.reason` (e.g. the contact is Do-Not-Contact).
    - Otherwise show `draft.subject` and `draft.body`, and note it's a **draft for
      the rep to review and send** — never auto-send.
