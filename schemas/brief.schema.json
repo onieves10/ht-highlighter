@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HT Highlighter — Account Brief",
+  "description": "Synthesized research brief. Every asserted fact lives in signals[] with a source, so the email step can only reuse cited, grounded claims.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["account", "contact", "dnc", "summary", "signals", "gaps"],
+  "properties": {
+    "account": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["domain", "name", "is_public"],
+      "properties": {
+        "domain": { "type": "string" },
+        "name": { "type": "string" },
+        "is_public": { "type": "boolean", "description": "true if a CIK/10-K was found on EDGAR" },
+        "cik": { "type": ["string", "null"] }
+      }
+    },
+    "contact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": { "enum": ["person", "general"] },
+        "name": { "type": ["string", "null"] },
+        "title": { "type": ["string", "null"] }
+      }
+    },
+    "dnc": {
+      "type": "object",
+      "description": "Do-not-contact guardrail. If flag is true, the email step must refuse to draft.",
+      "additionalProperties": false,
+      "required": ["flag"],
+      "properties": {
+        "flag": { "type": "boolean" },
+        "reason": { "type": ["string", "null"] }
+      }
+    },
+    "summary": {
+      "type": "string",
+      "description": "2-4 sentence account brief. Narrative only — no fact here may appear in the email unless it is also a cited signal."
+    },
+    "signals": {
+      "type": "array",
+      "description": "Discrete, citable facts/hooks. The email may ONLY reference facts that appear here with a source_url and confidence != low.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim", "category", "source", "source_url", "snippet", "confidence"],
+        "properties": {
+          "claim": { "type": "string" },
+          "category": { "enum": ["news", "financials", "company", "person", "crm", "other"] },
+          "source": { "type": "string", "description": "Human-readable origin, e.g. 'EDGAR 10-K Item 1A', 'CRM row: Priya Raman', 'Perplexity news'." },
+          "source_url": { "type": ["string", "null"], "description": "URL when external. null only for internal CRM rows (source names the row instead)." },
+          "snippet": { "type": "string", "description": "Verbatim supporting text the claim was drawn from. Never paraphrase into the snippet." },
+          "confidence": { "enum": ["high", "medium", "low"] }
+        }
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "description": "What could not be found or was empty, stated plainly. e.g. 'No public 10-K (private company)', 'No prior CRM history'.",
+      "items": { "type": "string" }
+    },
+    "recommended_angle": {
+      "type": ["string", "null"],
+      "description": "Suggested outreach angle, grounded in the signals above. null if grounding is too thin to recommend one."
+    }
+  }
+}

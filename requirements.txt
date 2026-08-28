@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+psycopg[binary]
+requests
+anthropic
+jsonschema
+python-dotenv
+beautifulsoup4
+lxml
+# unstructured  # production doc-ETL for the 10-K; heavy install. Prototype uses a
+#               # lightweight BeautifulSoup section extractor as the fallback.

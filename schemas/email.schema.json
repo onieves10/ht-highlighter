@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HT Highlighter — Email Draft",
+  "description": "Draft-only outreach. needs_human short-circuits drafting (e.g. DNC or too little grounding). Every personalization claim in the body must be listed in cited_facts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["needs_human", "cited_facts"],
+  "properties": {
+    "needs_human": {
+      "type": "boolean",
+      "description": "true if the system refuses to auto-draft (DNC/active deal, or grounding too thin). When true, subject/body stay null and reason explains."
+    },
+    "reason": {
+      "type": ["string", "null"],
+      "description": "Why a human is needed. Required (non-null) when needs_human is true."
+    },
+    "subject": { "type": ["string", "null"] },
+    "body": {
+      "type": ["string", "null"],
+      "description": "Short outreach email (under ~120 words), one CTA. Draft-only — never sent automatically."
+    },
+    "cited_facts": {
+      "type": "array",
+      "description": "Every personalization claim used in the body, each mapped to the signal source it came from. Empty array is allowed only when needs_human is true.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["fact", "source"],
+        "properties": {
+          "fact": { "type": "string" },
+          "source": { "type": "string", "description": "Must match a signal's source/source_url from the brief." }
+        }
+      }
+    }
+  }
+}
