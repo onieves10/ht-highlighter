@@ -1,5 +1,15 @@
 # HT Highlighter
 
+**Timeline tracked**
+- ~1.5 hrs to lay out thoughts & whiteboard in a Google Doc
+- ~30 min to clean up thoughts into the OUTLINE NOTES section, while Claude Code built a basic prototype end to end and deployed the repo + prototype via GitHub CLI and Railway CLI
+- included pauses to adjust prompts (indexed on proper representation of variables and output format)
+
+_next day_
+- ~10 min review deployment
+- ~20 min testing prototype
+- ~20 min finalizing GH + diagram + notes
+
 An agentic SDR research + outreach workflow. Give it an account domain (and
 optionally a contact) and it returns a **grounded research brief** — every claim
 carries a source and a verbatim snippet — plus a **first-draft email** built only
