@@ -1,5 +1,7 @@
 # HT Highlighter
 
+# Loom Walkthrough: https://github.com/onieves10/ht-highlighter
+
 **Timeline tracked**
 - ~1.5 hrs to lay out thoughts & whiteboard in a Google Doc
 - ~30 min to clean up thoughts into the OUTLINE NOTES section, while Claude Code built a basic prototype end to end and deployed the repo + prototype via GitHub CLI and Railway CLI
