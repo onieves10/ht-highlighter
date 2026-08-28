@@ -127,7 +127,7 @@ App/GH name: **HT Highlighter**
 **Leading indicators (move in week 1)**
 - research minutes saved
 - % drafts sent-as-is vs. edited vs. scrapped (can use Nooks API in CLI to pull email copy?)
-- # accounts researched/day
+- number of accounts researched/day
 
 **Lagging indicators (month 2-3)**
 - positive reply rate
